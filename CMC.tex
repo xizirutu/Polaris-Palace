@@ -1,0 +1,926 @@
+\documentclass[12pt]{ctexart}  % 中文文档类
+% 先加载中文相关，再加载数学包（顺序很重要）
+\usepackage{amsmath}     % \mathcal 基础
+\usepackage{amssymb}
+\usepackage{mathrsfs}   
+\usepackage{geometry} % \mathscr 依赖
+\usepackage{amsthm, enumitem}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{titlesec}
+\newtheorem{question}{问题}[]
+\title{全国大学生数学竞赛方法与技巧收集(第十七届版)}
+\author{王晓东\\中国海洋大学数学科学学院}
+\date{2026.1.23}
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{组合在高等代数中的应用}
+
+在CMC的初赛中，高等代数一般占35\%的分数，在决赛则会出29-34分的题，是比较重要的一环。由于高等代数的题目往往会涉及一些与组合相关的技巧，这里总结几种，大部分都是抽屉原理的应用。
+
+为方便起见，我们先给出抽屉原理：
+
+在\(n\)个抽屉里放入多于\(n\)个小球，则一定有一个抽屉有2个以上的小球。
+
+实际我们用到的往往都是 \(\sum_{i=1}^n a_i > m \implies \exists i, a_i>\frac{m}{n}\)，或者 \(a_1a_2 \dots a_n > c^n \implies \exists i, a_i > c\) 的形式。
+
+尤其是一些特别大的数字，比如阶乘，或者年份往往就会出现这种处理措施。
+
+下面是一些例子：
+
+
+\begin{question}(十六决三)
+设实系数多项式$p(x)$和$q(x)$分别为:
+\[
+p(x)=x^{n}+a_{1}x^{n-1}+\dots+a_{n},\quad q(x)=x^{m}+b_{1}x^{m-1}+\dots+b_{m}.
+\]
+已知$q(x)\mid p(x)$, 且对某个$k$有$|b_{k}|>2025^{k}\mathrm{C}_{m}^{k}$, 其中$\mathrm{C}_{m}^{k}$为组合数. 证明: 存在$j$使得$|a_{j}|>2024$.
+\end{question}
+
+\vspace{1em} % 题干留空
+
+\begin{proof}题目中 \(|b_k| > 2025^k \mathrm{C}_m^k\) 几乎已经可以算作一个提示了。
+
+我们先对\(p,q\)进行因式分解，已知\(m \geq n\)。
+
+设
+\[
+p(x) = (x-\lambda_1)(x-\lambda_2)\cdots(x-\lambda_m)(x-\mu_{m+1})(x-\mu_{m+2})\cdots(x-\mu_n)
+\]
+\[
+q(x) = (x-\lambda_1)(x-\lambda_2)\cdots(x-\lambda_m)
+\]
+
+对系数来说，能出现 \(\mathrm{C}_m^k\) 的只有韦达定理中出现的初等对称多项式。这里
+\[
+|b_k| = \left|(-1)^k\sum_{1 \leq i_1 < i_2 < \dots < i_k \leq m} \lambda_{i_1}\lambda_{i_2}\cdots\lambda_{i_k}\right| = 2025^k \mathrm{C}_m^k
+\]
+
+显然，\(\lambda_{i_1} \dots \lambda_{i_k}\) 有 \(\mathrm{C}_m^k\) 项，由抽屉原理我们可以得到：\(\exists i_1,\dots,i_k\) 使得 \(|\lambda_{i_1}\cdots\lambda_{i_k}| > 2025^k\)。
+
+这里又得到抽屉原理的式子，于是进一步得到：至少有一个 \(\lambda_j\)，满足 \(|\lambda_j| > 2025\)。
+
+且\(\lambda_j\)是\(p\)和\(q\)的一个公共根，即 \(p(\lambda_j)=q(\lambda_j)=0\)。
+
+好了，做到这里已经有10分了（本题满分14分），关于抽屉原理的部分已经用完，接下来对剩下的部分，我们给出两种证法：
+
+证法一(标答)：
+
+不妨设全体 \(|a_j| \leq 2024\)。
+
+则 \(p(\lambda_i) = |\lambda_i^n + a_1\lambda_i^{n-1} + \dots + a_n\lambda_i + a_{n+1}|\)
+
+\[
+\begin{aligned}
+&= |\lambda_i|^n - |a_1||\lambda_i|^{n-1} - \dots - |a_n| \\
+&> |\lambda_i|^n - 2024 \left(|\lambda_i|^{n-1} + \dots + 1\right) \\
+&= |\lambda_i|^n - 2024 \cdot \frac{|\lambda_i|^n - 1}{|\lambda_i| - 1} \\
+&= |\lambda_i|^n \left(1 - \frac{2024}{|\lambda_i| - 1}\right) + \frac{2024}{|\lambda_i| - 1} \\
+&= |\lambda_i|^n \left(\frac{|\lambda_i| - 2025}{|\lambda_i| - 1}\right) + \frac{2024}{|\lambda_i| - 1}
+\end{aligned}
+\]
+
+两项都大于0，因此 \(|p(\lambda_i)| > 0\)，与 \(p(\lambda_i)=0\) 矛盾。因此 \(\exists \lambda_j\) 使得 \(|\lambda_j| > 2024\)。
+
+证法2(使用戈氏圆盘定理)： 考虑 $p(x)=x^n+a_1x^{n-1}+\dots+a_n$ 的友阵如下：
+\[
+F = \begin{pmatrix}
+0 & 1 & 0 & \dots & 0 \\
+0 & 0 & 1 & \dots & 0 \\
+\vdots & \vdots & \vdots & & \vdots \\
+0 & 0 & 0 & \dots & 1 \\
+-a_n & -a_{n-1} & -a_{n-2} & \dots & -a_1
+\end{pmatrix}
+\]
+则有$F$的特征值位于圆盘
+\[
+|z - a_{ii}| \leq |a_{i1}| + |a_{i2}| + \dots + |a_{i,i-1}| + |a_{i,i+1}|+ \dots + |a_{in}|
+\]
+或
+\[
+|z - a_{ii}| \leq |a_{1i}| + |a_{2i}| + \dots + |a_{i-1,i}| + |a_{i+1,i}|+ \dots + |a_{ni}|
+\]
+中（注意这里既可以用行也可以用列求和，按照如上的友阵，应该是列）
+
+在本题中为
+\[
+|z - 0| \leq 1 + |a_j|
+\]
+$\implies |a_j| \geq |z| - 1$，将特征值 $|\lambda| > 2025$ 代入
+\[
+> 2025 - 1 = 2024
+\]
+因此，至少有一个 $\lambda$，s.t. $|\lambda| > 2024$。
+
+
+\end{proof}
+我个人觉得第二种方法更自然.
+
+注:本题原先是红皮书上的一道练习题，最后在2025年的第十六届决赛中仅把年份数字改成了当年年份便作为了决赛题，这说明了红皮书对备考的意义以及出题在一定程度上实际上是可以预测的
+\vspace{1em}
+
+% 十五决五 部分
+然后是这道题
+\\
+\begin{question}(十五决五)
+设$A$为$n(n \geq 3)$阶实可逆矩阵，且$A^k$相似于$A$
+对$k = 1,2,\dots,n!-1,n!$成立，证明：对一切正整数$k$皆有$A^k$相似于$A$.
+\end{question}
+\begin{proof}
+我们在复数域中考虑，$A$ 共有 $n$ 个特征值，那么题目说的很明确了:
+\par 因为 $A^k$ 与 $A$ 相似这说明 $A^k$ 与 $A$ 的特征值完全相同（相差一个排列的意义下），既然 $k \leq n!$ 时该结论都成立,我们不妨设 $A$ 的特征值为 
+$\lambda_1, \lambda_2, \dots, \lambda_n$，那么 $A^k$ 中的$k$遍历了从1到$n！$时， $\lambda_1, \dots, \lambda_n$ 同样遍历了它的所有排列
+
+因此，以 $\lambda_1$ 为例，$\lambda_1, \lambda_1^2, \dots, \lambda_1^{n+1}$ 中，必有两个相等，（因为 $\lambda_1, \dots, \lambda_1^{n+1}$ 有 $n+1$ 个，但却只有 $n$ 个互异的数）
+
+不妨设 $\lambda_1^{p_1} = \lambda_1^{q_1} \implies \lambda_1^{p_1 - q_1} = 1$，并且一定有 $p_1 - q_1 < n$
+
+同理，$\lambda_2^{p_2 - q_2} = 1$，且 $p_2 - q_2 < n$，……，$\lambda_n^{p_n - q_n} = 1$，且 $p_n - q_n < n$
+
+又由于 $p_i - q_i < n \implies \frac{n}{p_i - q_i}$ 都是整数 $\implies \lambda_i^{n!} = (\lambda_i^{p_i - q_i})^{\frac{n!}{p_i - q_i}} = 1^{\frac{n!}{p_i - q_i}} = 1$
+
+这也就是说，$A^{n!}$ 的特征值全为1，由于 $A^{n!}$ 与 $A$ 有相同的特征值 $\implies A$ 的特征值全是1
+
+因此 $A$ 的Jordan标准型为
+\[
+J = \begin{pmatrix}
+J_1 & & & \\
+& J_2 & & \\
+& & \ddots & \\
+& & & J_s
+\end{pmatrix}
+\]
+其中
+\[
+J_i = \begin{pmatrix}
+1 & 1 & & \\
+& 1 & \ddots & \\
+& & \ddots & 1 \\
+& & & 1
+\end{pmatrix}_{n_i \times n_i}
+\]
+令 $A = PJP^{-1}$
+
+故 $A^k = PJ^kP^{-1}$，熟知对特征值1的 $n_i$ 阶Jordan块 $J_i$ 有 $J_i \sim J_i^k$（若不知道这个，则可证明如下）
+
+$J_i^k = (I + H)^k$，其中
+\[
+H = \begin{pmatrix}
+0 & 1 & & \\
+& 0 & \ddots & \\
+& & \ddots & 1 \\
+& & & 0
+\end{pmatrix}
+\]
+则
+\[
+J_i^k = \begin{pmatrix}
+1 & \binom{k}{1} & \binom{k}{2} & \dots \\
+& 1 & \binom{k}{1} & \dots \\
+& & \ddots & \ddots \\
+& & & 1
+\end{pmatrix}
+\]
+计算$J_i^k$的初等因子. 则有$\lambda I-J_i^k=
+\begin{bmatrix}
+\lambda-1 & -k & \binom{k}{2}& \dots\\
+& \lambda-1 & \ddots & \\
+& & \ddots & -k \\
+& & & \lambda-1
+\end{bmatrix}$
+
+行列式因子为$1,1,\dots,1,(\lambda-1)^n$
+
+$\Rightarrow$不变因子为$\underbrace{1,1,\dots,1}_{n-1\text{个}},(\lambda-1)^n$
+
+$\Rightarrow$初等因子只有$(\lambda-1)^n$，即$J_i^k$的Jordan块仍为
+$\begin{bmatrix}
+1 & 1 & & \\
+& 1 & \ddots & \\
+& & \ddots & 1 \\
+& & & 1
+\end{bmatrix}_{n\times n}$
+$\Rightarrow J_i^k\sim J_i$
+
+于是对任意$A^k$. $A^k\sim J^k\sim J\sim A$.
+
+
+\end{proof}
+这里对于抽屉原理的应用主要是$\lambda_i,\lambda_i^2,\dots,\lambda_i^{n!}$中必有两者相等，从而推出$\lambda_i^{t-s}=1$.
+
+但是对组合的应用用到了$A,A^2,\dots,A^{n!}$的特征值遍历了$A$的特征值的排列.
+
+
+有时对组合原理的应用可能并不是开头就可以看出，只是在整个解题过程中有用到：
+
+
+
+\begin{question}
+(十三初补三)设 \(R = \{0,1,4,9,16\}\)，\(U\) 为 \(R\) 上的3阶方阵全体：
+\[
+U = \left\{ (a_{ij})_{3\times 3} \;\middle|\; a_{ij} \in R \right\}.
+\]
+例如，
+\[
+\begin{pmatrix}
+1 & 1 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 0
+\end{pmatrix},\;
+\begin{pmatrix}
+1 & 4 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 0
+\end{pmatrix}
+\]
+便为 \(U\) 中的两元。现设 \(S\) 为 \(U\) 的一个子集。证明：若 \(S\) 的元素个数多于 \(5^9 - 5^3 - 18\)，则必存在不同的 \(A,B \in S\) 使得 \(AB = BA\)。
+\end{question}
+
+\vspace{0.5em}
+\begin{proof}首先很容易注意到，题目给的数字 \(5^9-5^3-18\) 很怪，并且$5^9$恰好是$|U|$,再加上需要证的是当 \(|S|>5^9-5^3-18\) 时，必有二矩阵交换，猜测需要找到互相交换的矩阵数量大于某个数字，并记互相交换的矩阵集合为$T$,这样就可以证，当$|S|$大于某个数字时，$S$中必有二矩阵落在 \(T\) 中，这样问题就解决了。
+
+\vspace{0.5em}
+熟知，对角阵是互相交换的。令对角阵集合为 \(D=\{\text{diag}\{a,b,c\}\mid a,b,c\in R\}\)。这样就得到了 \(5^3\) 个互相交换的矩阵，
+但还有一些没有找到，而且找到了也并不能证明它们和 \(D\) 交换，也就是说，我们要找的另一个矩阵集合不一定和 \(D\) 交换。
+这么说有点乱，我们梳理一下，不妨把 \(U\) 拆分成几个子集合如下：
+
+\[
+U = N \cup D \cup A
+\]
+其中，N代表比较一般的矩阵，D代表对角矩阵，A代表另一个互相交换的矩阵集合，也是我们目标要找到的集合.
+
+\vspace{0.5em}
+不妨设 \(|A|=a\)，则 \(|N|=5^9-5^3-a\)。我们要证的是 \(S\)（它可能既包含 \(N\)，也包含 \(D\) 和 \(A\) 的元素）的元素量 \(>5^9-5^3-18\) 时，\(S\) 必有2个 \(D\) 中元素或2个 \(A\) 中元素，这要求 \(S\) 至少比 \(|N|\) 多3个元素，这样就会有3个矩阵属于 \(D\cup A\)。只有以下几种情况：
+\begin{enumerate}
+    \item 2个矩阵在 \(D\)中，一个在 \(A\)中
+    \item 2个矩阵在 \(A\)中，一个在 \(D\)中
+    \item 3个矩阵都在 \(A\)中 或都在 \(D\)中
+\end{enumerate}
+显然必能找到两个矩阵交换，但是想到这里，我们突然意识到集合 \(A\) 不一定只有一个，如果有多个 \(A\) 呢？记为 \(A_1,A_2,\dots,A_m\)，那么有
+\[
+U = N \cup D \cup A_1 \cup \dots \cup A_m
+\]
+设 \(|A_1|=a_1,\dots,|A_m|=a_m\)。我们就要证 \(S\) 至少比 \(|N|\) 多 \(m+2\) 个元素，这样 \(m+2\) 个矩阵分布于 \(D,A_1,\dots,A_m\) 共 \(m+1\) 个集合，由抽屉原理就知必有两个属于同一集合，这样就得证了。
+
+\vspace{0.5em}
+现在就只差找到 \(A_i\) 了。考虑到复杂性，上三角阵之积仍为上三角阵，并且对角线上的积等于积的对角线。这样我们就只需要考虑3个元素。更简单起见，用对角元都是1的试起。
+
+\[
+\begin{bmatrix}
+1 & a & b \\
+& 1 & c \\
+& & 1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+1 & d & e \\
+& 1 & f \\
+& & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & a+d & e+af+b \\
+& 1 & c+f \\
+& & 1
+\end{bmatrix}
+\]
+
+\[
+\begin{bmatrix}
+1 & d & e \\
+& 1 & f \\
+& & 1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+1 & a & b \\
+& 1 & c \\
+& & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & a+d & b+dc+e \\
+& 1 & c+f \\
+& & 1
+\end{bmatrix}
+\]
+
+\vspace{0.5em}
+可以看到，只有 \((1,3)\) 元素受次序影响。如果 \(a,f\) 和 \(d,c\) 之中分别有一个为0，\(e+af+b\) 和 \(b+dc+e\) 都会变成 \(b+e\)，就不受顺序影响了。简单起见，让 \(b,c,e,f\) 都为0，那么有
+\[
+\begin{bmatrix}
+1 & a & 0 \\
+& 1 & 0 \\
+& & 1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+1 & d & 0 \\
+& 1 & 0 \\
+& & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & a+d & 0 \\
+& 1 & 0 \\
+& & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & d & 0 \\
+& 1 & 0 \\
+& & 1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+1 & a & 0 \\
+& 1 & 0 \\
+& & 1
+\end{bmatrix}
+\]
+
+这就是4个互相交换的矩阵（因为 \(a,d\) 不能为0，否则就落入 \(D\) 中）。
+
+我们把对角元换掉如何呢？
+\[
+\begin{bmatrix}
+b & a & 0 \\
+& b & 0 \\
+& & b
+\end{bmatrix}
+\begin{bmatrix}
+b & d & 0 \\
+& b & 0 \\
+& & b
+\end{bmatrix}
+=
+\begin{bmatrix}
+b^2 & b(a+d) & 0 \\
+& b^2 & 0 \\
+& & b^2
+\end{bmatrix}
+\]
+可以看到，\(b\in\{0,1,4,9,16\}\) 时，这些矩阵都互相交换。
+于是我们找到了 \(A_1,A_2,A_3,A_4,A_5\)，每个有4个元素，先看看有没有达到题目要求。
+
+\[
+U = N \cup D \cup A_1 \cup \dots \cup A_5
+\]
+
+其中，$|N|>5^9-5^3-20$
+
+当$S$多于 \(5^9-5^3-18\) 个元素的时候，可以在 \(D\cup A_1 \cup \dots \cup A_5\) 中有至少3个元素,显然不合题意。
+
+这促使我们找到更多的矩阵。我们发现，在
+\[
+\begin{bmatrix}
+b & a & 0 \\
+& b & 0 \\
+& & b
+\end{bmatrix}
+\]
+型的矩阵乘法中，\((3,3)\) 位的 \(b\) 一直没有用到，再加之，题干给出的两个矩阵是交换的，这让我们想到，\((3,3)\) 位的 \(b\) 是否可以改变？
+
+\[
+\begin{bmatrix}
+b & a & 0 \\
+& b & 0 \\
+& & c
+\end{bmatrix}
+\begin{bmatrix}
+b & d & 0 \\
+& b & 0 \\
+& & e
+\end{bmatrix}
+=
+\begin{bmatrix}
+b^2 & b(a+d) & 0 \\
+& b^2 & 0 \\
+& & ce
+\end{bmatrix}
+=
+\begin{bmatrix}
+b & d & 0 \\
+& b & 0 \\
+& & e
+\end{bmatrix}
+\begin{bmatrix}
+b & a & 0 \\
+& b & 0 \\
+& & c
+\end{bmatrix}
+\]
+也就是说，\((3,3)\) 位的 \(b\) 可以任意改动！这就大大增加了矩阵数量。例如：
+\[
+\begin{bmatrix}
+1 & a & 0 \\
+& 1 & 0 \\
+& & b
+\end{bmatrix}
+\]
+中共有 24 个矩阵（不能同时 \(b=1\) 且 \(a=0\)），并且互相交换，记为 \(A\)。
+
+则
+\[
+U = N \cup D \cup A
+\]
+
+其中，$|N|>5^9-5^3-24$
+
+且若 \(|S|>5^9-5^3-18\)，可在 \(D\cup A\) 中选取至少7个矩阵，符合题意。
+
+这就证明了此题.
+
+
+\end{proof}
+
+注：标答给出的构造非常具有技巧性，且实际上是\(
+\begin{bmatrix}
+1 & a & 0 \\
+& 1 & 0 \\
+& & b
+\end{bmatrix}
+\)
+型矩阵的子集，因此实际上能证明比题目更强的结论。
+
+
+通过以上几个例子，可以看到，当组合原理在高等代数中被用到时，往往会牵涉一些大数或者奇怪的数，这样的数出现在题干中，一般是非常具有导向性的，甚至可以从这些数字的出现窥得解法.
+
+
+
+
+
+\section{Fourier分析的应用}
+Fourier分析在往常一直是CMC涉及比较少的方面，仅在第八届决赛出了一道第四题，而今年(第十七届)陡然增加了对Fourier分析的重视程度，
+仅在第十七届初赛便出了两道大题(第二题和第六题)，占数学分析部分的70\%,认为其在十七届决赛比重会有所增加是自然的.然而由于许多高校在讲数学分析这门课时，
+常常会忽视Fourier分析的部分，这导致很多人对其了解不足.在这一部分解题的过程中，我先对题目会用到的Fourier分析的基本结果做一些说明，随后即利用这些结果来解决问题，不再单列结论,
+更多的细节应该参照那些真正讲解Fourier分析的书籍来获得，红皮书提到的但Stein的Fourier分析所没有提到的结论我也会加以补充,因为我自己只读完了Stein的Fourier分析导论，因此这里给出的一些陈述基本都以这本书为准，
+以我自己的观点来看，至少要读完这本书的$2-5$章才能对处理这些问题有明显的帮助.
+
+
+
+
+以十七届初赛的第二题为例:
+\begin{question}
+    设 \(N \ge 1\)，\(\mathcal{S}\) 是包含 \(N\) 个整数的集合，满足如下的加性唯一性条件：
+
+若 \(n_k \in \mathcal{S}\;(1 \le k \le 4)\) 且 \(n_1 + n_2 = n_3 + n_4\)，则必有 \(n_1 = n_3\) 或 \(n_1 = n_4\)。
+
+令
+\(
+\displaystyle f(x) := \sum_{n\in\mathcal{S}} e^{2\pi i n x}.
+\)
+
+\begin{enumerate}
+    \item 计算
+    \(
+    \displaystyle \int_0^1 |f(x)|^2 dx,\quad \int_0^1 |f(x)|^4 dx.
+    \)
+    \item 证明：
+    \(
+    \displaystyle \int_0^1 |f(x)| dx \ge \frac{\sqrt{N}}{2}.
+    \)
+\end{enumerate}
+\end{question}
+\begin{proof}题目中给的 $\mathcal{S}$ 先放在一边，因为计算 $\displaystyle\int_0^1 |f(x)|^2 dx$ 时，还用不到这个性质。
+
+\vspace{0.5em}
+我们熟知，$1,\sin x,\cos x,\sin 2x,\cos 2x,\dots$ 是连续函数空间的一个标准正交基，
+但相同的，$e^{inx}$（其中 $n\in\mathbb{Z}$）也是一组标准正交基，并且它和三角多项式是等价的：
+\[
+\frac{e^{inx} + e^{-inx}}{2} = \cos nx, \quad
+\frac{e^{inx} - e^{-inx}}{2i} = \sin nx.
+\]
+
+因此实际上常常用复指数的形式表示傅里叶级数，这时候内积定义为
+\[
+\langle f,g\rangle = \frac{1}{2\pi}\int_0^{2\pi} f(x)\overline{g(x)} dx.
+\]
+(注意这里的内积是共轭对称的而不是对称的)于是
+\[
+\|e^{inx}\|^2 = \langle e^{inx},e^{inx}\rangle
+= \frac{1}{2\pi}\int_0^{2\pi} e^{inx}\cdot\overline{e^{inx}} dx
+= \frac{1}{2\pi}\int_0^{2\pi} 1\cdot dx = 1,
+\]
+\[
+\langle e^{inx},e^{imx}\rangle
+= \frac{1}{2\pi}\int_0^{2\pi} e^{i(n-m)x} dx
+= \frac{1}{2\pi}\cdot\frac{1}{i(n-m)}e^{i(n-m)x}\bigg|_0^{2\pi}
+= 0 \quad (m\neq n).
+\]
+这也就说明了 $e^{inx}$ 是一组标准正交基。$\mathbb{R}$ 上连续函数的标准正交基除了这两种，还有勒让德多项式、施图姆—刘维尔边值问题的特征函数系等。
+
+因此此时要计算的 $\displaystyle\int_0^1 |f(x)|^2 dx$ 就转化为
+\[
+\int_0^1 f(x)\overline{f(x)} dx = \langle f(x),f(x)\rangle.
+\]
+这里积分上下限差为 $1$，系数也为 $1$，是因为题目给的函数是 $e^{2\pi i nx}$ 而不是 $e^{inx}$，它的周期是 $1$。
+
+因此
+\[
+\Big\langle \sum_{n\in\mathcal{S}} e^{2\pi i nx},\; \sum_{n\in\mathcal{S}} e^{2\pi i nx} \Big\rangle
+= \sum_{n\in\mathcal{S}} \langle e^{2\pi i nx},e^{2\pi i nx}\rangle
++ \sum_{\substack{n\neq m\\n,m\in\mathcal{S}}} \langle e^{2\pi i nx},e^{2\pi i mx}\rangle
+\]
+\[
+= N\cdot 1 + 0 = N.
+\]
+因此 $\displaystyle\int_0^1 |f(x)|^2 dx = N$。
+
+对于 $|f(x)|^4$，我们就很难直接算了，先计算
+\[
+|f(x)|^2 = \left( \sum_{n\in\mathcal{S}} e^{2\pi i nx} \right)
+\left( \sum_{n\in\mathcal{S}} e^{-2\pi i nx} \right)
+\]
+\[
+= \left( N + \sum_{\substack{n\neq m\\n,m\in\mathcal{S}}} e^{2\pi i (n-m)x} \right).
+\]
+
+考察这个式子，因为我们不清楚 $n-m$ 中有多少相同的数，直接积分无法确定有多少 $1$ 和 $0$ 会出现。
+
+现在开始考察 $\mathcal{S}$ 的性质：
+$n_1+n_2 = n_3+n_4 \implies n_1-n_3 = n_4-n_2$，
+说明 $n_1,n_2,n_3,n_4$ 必定成对相等。
+
+为降低抽象性，我们举例说明，比如集合 $\{1,3,\dots\}$。
+那么，该集合不能有 $5$，若有 $5$，就有 $1+5=3+3$，与题设不符。
+但是有 $7$ 是可以的，但若有 $7$，就不能有 $9$，因为 $1+9=3+7$。
+
+于是我们可以先构造一个例子 $\mathcal{S} = \{1,3,7,15\}$。则
+\[
+3-1=2,\;7-1=6,\;15-1=14,\;7-3=4,\;15-3=12,\;15-7=8.
+\]
+观察这6个差，发现它们是互异的，而互异的情况就好处理得多，因为
+\[
+\left(N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right)\left(N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{-2\pi i(n-m)x}\right).
+\]
+
+这意味着，对项 $e^{2\pi i(n_1-m_1)x}$ 来说，右边的和式中除了 $e^{-2\pi i(n_1-m_1)x}$ 外，其余的所有项都与它正交。
+也就是说，
+\[
+\left\langle e^{2\pi i(n_1-m_1)x},\;N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right\rangle
+= \left\langle e^{2\pi i(n_1-m_1)x},\;e^{2\pi i(n_1-m_1)x}\right\rangle
+= 1.
+\]
+
+之后我们就可以轻松地计算其值。现在只需要证明 $\mathcal{S}$ 中元素的差是互异的。
+假设 $\exists n_1,m_1,n_2,m_2\in\mathcal{S}$，有
+\[
+n_1-m_1 = n_2-m_2 \implies n_1+m_2 = n_2+m_1,
+\]
+由加性唯一性条件，这推出 $n_1=n_2$ 或 $n_1=m_1$，进而得到 $n_1,m_1$ 与 $n_2,m_2$ 两两对应相等，矛盾。
+也就是说，对两两互异的 $n_1,m_1,n_2,m_2\in\mathcal{S}$，有 $n_1-m_1\neq n_2-m_2$。
+这就证明了 $\mathcal{S}$ 中元素的差是互异的。
+
+因此
+\begin{flalign*}
+&\left\langle N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x},\;N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right\rangle&
+\end{flalign*}
+\begin{flalign*}
+&= \left\langle N,\;N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right\rangle
++ \sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}\left\langle e^{2\pi i(n-m)x},\;N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right\rangle&
+\end{flalign*}
+（注：$N = N\cdot e^{2\pi i 0 x}$）
+\begin{flalign*}
+&= N^2 + \sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}\left\langle e^{2\pi i(n-m)x},\;e^{2\pi i(n-m)x}\right\rangle.&
+\end{flalign*}
+
+由于 $(n-m)$ 共有 $N^2-N$ 个，因此上式 $=2N^2-N$。而
+\begin{align*}
+\int_0^1 |f(x)|^4 dx 
+&= \int_0^1 |f(x)|^2 \cdot \overline{|f(x)|^2} dx\\
+&= \langle |f(x)|^2,\;|f(x)|^2\rangle\\
+&= \left\langle N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x},\;N+\sum_{\substack{n\neq m\\n,m\in\mathcal{S}}}e^{2\pi i(n-m)x}\right\rangle.
+\end{align*}
+于是就得到
+\[
+\int_0^1 |f(x)|^4 dx = 2N^2-N.
+\]
+
+(2). 第二问只是积分不等式的简单应用，这里提供一种只使用 Cauchy 不等式的做法。
+
+由于
+\[
+\left(\int_0^1 |f(x)|^4 dx\right)\left(\int_0^1 |f(x)|^2 dx\right) \ge \left(\int_0^1 |f(x)|^3 dx\right)^2,
+\]
+代入已知积分值得
+\[
+N\left(2N^2-N\right) \ge \left(\int_0^1 |f(x)|^3 dx\right)^2.
+\]
+
+而
+\[
+\left(\int_0^1 |f(x)| dx\right)\left(\int_0^1 |f(x)|^3 dx\right) \ge \left(\int_0^1 |f(x)|^2 dx\right)^2 = N^2,
+\]
+因此
+\[
+\int_0^1 |f(x)| dx \ge \frac{\left(\int_0^1 |f(x)|^2 dx\right)^2}{\int_0^1 |f(x)|^3 dx}
+\ge \frac{N^2}{\sqrt{N(2N^2-N)}}
+= \sqrt{\frac{N^3}{2N^2-N}}
+\ge \sqrt{\frac{N^3}{2N^2}}
+= \frac{\sqrt{N}}{\sqrt{2}} > \frac{\sqrt{N}}{2}.
+\]
+
+\end{proof}
+(注意原题此处有印刷错误，此处改正了这处错误)
+
+
+\begin{question}(八决四)
+    对$\mathbb{R}$上无穷次可微的（复值）函数$\varphi(x)$，称$\varphi \in \mathcal{S}$，
+如果$\forall m,k \ge 0$成立
+\[
+\sup_{x\in\mathbb{R}} \left| x^m \varphi^{(k)}(x) \right| < +\infty.
+\]
+若$f \in \mathcal{S}$，可定义
+\[
+\hat{f}(x) = \int_{\mathbb{R}} f(y) e^{-2\pi i x y} \, dy\quad (\forall x \in \mathbb{R}).
+\]
+证明：$\hat{f} \in \mathcal{S}$，且
+\[
+f(x) = \int_{\mathbb{R}} \hat{f}(y) e^{2\pi i x y} \, dy\quad (\forall x \in \mathbb{R}).
+\]
+\end{question}
+\begin{proof}
+    熟悉的读者很快就可以看出题目中所定义的函数就是Schwartz速降函数空间(在更合适的平方可积函数空间中研究Fourier级数已经超过了数学分析所囊括的范畴
+    ，而用速降函数空间来处理Fourier分析则是可以用数学分析所解决的事情，从此也可以看出命题并不会脱出数学分析所能处理的范畴),
+    而此题则就是要证明速降函数的Fourier变换仍然是速降函数，并且推出Fourier反演公式，这在Stein的Fourier分析导论的第五章给出了证明(定理5..1.9),本解答再次给出证明如下:
+
+    为了证明 \(\hat{f} \in \mathcal{S}\)，也就是需要证明
+\[
+\sup_{x\in\mathbb{R}} \left| x^m \hat{f}^{(k)}(x) \right| < +\infty.
+\]
+这包含：
+\begin{enumerate}
+    \item \(\hat{f}\) 有界；
+    \item \(\hat{f}\) 无穷次可微；
+    \item 对 \(\forall m,k\)，\(x^m \hat{f}^{(k)}(x)\) 都有界。
+\end{enumerate}
+
+\vspace{0.5em}
+实际上，
+\[
+|\hat{f}(x)| \le \int_{\mathbb{R}} |f(y)| |e^{-2\pi i x y}| dy.
+\]
+然而 \(|e^{-2\pi i x y}| = 1\)，
+\[
+\therefore |\hat{f}(x)| \le \int_{\mathbb{R}} |f(y)| dy.
+\]
+由 \(f(y)\) 的速降性，有 \(\sup_{x\in\mathbb{R}} |x^m f(x)| < +\infty\)，
+也就是说，当 \(|y|\) 足够大时 \(f(y) \le \frac{C}{y^2}\)，而当 \(|y|\) 比较小时，由于 \(f\) 的无穷次可微性，
+\(f\) 在 \([-a,a]\) 上连续，由于闭区间上的连续函数有界，这就推出 \(\int_{\mathbb{R}} |f(y)| dy < +\infty\)。
+也即 \(\int_{\mathbb{R}} |f(y) e^{-2\pi i x y}| dy < +\infty \implies\) 该含参变量反常积分一致收敛。
+
+\vspace{0.5em}
+进而 \(|\hat{f}(x)| \le \int_{\mathbb{R}} |f(y)| dy < +\infty \implies \hat{f}(x)\) 有界。
+
+\vspace{0.5em}
+为了证明 \(\hat{f}\) 可微，先对它进行形式求导运算：
+\[
+\hat{f}'(x) = \int_{\mathbb{R}} -2\pi i y \cdot f(y) \cdot e^{-2\pi i x y} dy
+= -2\pi i \int_{\mathbb{R}} y \cdot f(y) e^{-2\pi i x y} dy.
+\]
+就是说，\(\hat{f}'(x)\) 是 \((-2\pi i y f(y))\) 的 Fourier 变换，从这个形式看，\(\hat{f}^{(k)}(x)\) 就是 \((-2\pi i y)^k f(y)\) 的 Fourier
+变换。（从这里还可以看出，\(x\hat{f}(x)\) 是 \(\frac{f'(x)}{2\pi i}\) 的 Fourier 变换，用分部积分即可证明）
+
+\vspace{0.5em}
+\(\displaystyle
+\int_{\mathbb{R}} -2\pi i y f(y) e^{-2\pi i x y} dy
+\)
+有界是显然的，因为 \(y f(y)\) 仍然是 \(\mathcal{S}\) 中的函数。
+
+\vspace{0.5em}
+我们用定义来证明 \(\hat{f}'(x)\) 就是它，即计算
+\[
+\lim_{h\to0} \frac{\hat{f}(x+h) - \hat{f}(x)}{h}.
+\]
+我们有
+\[
+\left| \frac{\hat{f}(x+h) - \hat{f}(x)}{h} + 2\pi i \int_{\mathbb{R}} y f(y) e^{-2\pi i x y} dy \right|
+= \left| \int_{\mathbb{R}} f(y) e^{-2\pi i x y} \left( \frac{1}{h}(e^{-2\pi i y h} - 1) + 2\pi i y \right) dy \right|.
+\]
+
+当 \(|y|\) 比较大的时候，因为\(|e^{-2\pi i x}| = 1\)。由 \(f\) 的速降性，\(\exists N\)，有
+\[
+\int_{|y|>N} |f(y)| dy \le \varepsilon \ \ \ \text{和} \ \ \ \int_{|y|>N} |yf(y)| dy \le \varepsilon.
+\]
+对其分别用到 \(\hat{f}(x+h)\)、\(\hat{f}(x)\)、\(y f(y) e^{-2\pi i x y}\) 上，有
+\[
+\left| \int_{|y|>N} f(y) e^{-2\pi i (x+h) y} dy \right| \le \varepsilon,\quad
+\left| \int_{|y|>N} f(y) e^{-2\pi i x y} dy \right| \le \varepsilon,\quad
+\left| \int_{|y|>N} y f(y) e^{-2\pi i x y} dy \right| \le \varepsilon.
+\]
+
+因此
+\[
+\int_{\mathbb{R}} f(y) e^{-2\pi i x y} \left( \frac{1}{h}(e^{-2\pi i y h} - 1) + 2\pi i y \right) dy
+\le \int_{|y|\le N} f(y) e^{-2\pi i x y} \left( \frac{1}{h}(e^{-2\pi i y h} - 1) + 2\pi i y \right) dy
++ \varepsilon.
+\]
+当 \(|y|\le N\) 时，考察
+\[
+\frac{e^{-2\pi i y h} - 1}{h} + 2\pi i y = \frac{e^{-2\pi i y h} + 2\pi i y h - 1}{h}.
+\]
+对 \(e^{-2\pi i y h}\) 展开有
+\[
+\begin{aligned}
+\text{上式} &= \frac{1 - 2\pi i y h + (-2\pi i y h)^2 + o\bigl((2\pi i y h)^2\bigr) - 1 + 2\pi i y h}{h} \\
+&= \frac{(2\pi i y h)^2 + o\bigl((2\pi i y h)^2\bigr)}{h} \\
+&= (2\pi i y)^2 h + o\bigl((2\pi i y)^2 h\bigr).
+\end{aligned}
+\]
+
+因此，可选取 \(h < \varepsilon\)，于是
+\[
+\left| \int_{|y|\le N} f(y) e^{-2\pi i x y} \left( \frac{e^{-2\pi i y h} - 1}{h} + 2\pi i y \right) dy \right|
+\le \int_{|y|\le N} |f(y)| \cdot \left| \frac{e^{-2\pi i y h} - 1}{h} + 2\pi i y \right| dy.
+\]
+不妨设 \(|f(y)|\le C\)（有界），则
+\[
+\text{上式} \le \int_{|y|\le N} |f(y)| \cdot \varepsilon dy < 2NC \cdot \varepsilon.
+\]
+
+由于 \(|f(y)|\) 也是有界的，上式 \(\le 2NC \cdot \varepsilon\)。
+于是总和 \(< 2NC \cdot \varepsilon + \varepsilon\)，即
+\[
+\lim_{h\to0} \frac{\hat{f}(x+h) - \hat{f}(x)}{h} = \int_{\mathbb{R}} -2\pi i y f(y) e^{-2\pi i x y} dy.
+\]
+
+这样我们就证明了 \(\hat{f}\) 可导。用相同的方法可证 \(\hat{f}\) 可求任意阶导数，并且
+\[
+\hat{f}^{(k)}(x) = \int_{\mathbb{R}} (-2\pi i y)^k f(y) e^{-2\pi i x y} dy.
+\]
+而 \(\hat{f}^{(k)}(x)\) 有界是显然的，因为 \(y^k f(y)\) 仍然是速降函数。
+
+而我们又知道 \(x f(x)\) 的 Fourier 变换是 \(\frac{f'(x)}{2\pi i}\) 的 Fourier 变换，于是有
+\[
+x^m \hat{f}^{(k)}(x) = \int_{\mathbb{R}} \frac{1}{(2\pi i)^m}\left( \frac{d}{dy} \right)^m \bigl[ (-2\pi i y)^k f(y) \bigr] e^{-2\pi i x y} dy.
+\]
+是有界的，因为 \(\left( \frac{d}{dy} \right)^m \bigl[ (-2\pi i y)^k f(y) \bigr]\) 也是速降函数。
+
+这就证明了 \(\hat{f} \in \mathcal{S}\)。
+
+对于
+\[
+f(x) = \int_{\mathbb{R}} \hat{f}(y) e^{2\pi i x y} dy,
+\]
+这里既提供标准答案的方法，也提供 Stein 书上的证明方法：
+
+证明一（标准答案）：由于 \(\hat{f} \in \mathcal{S}\)，于是
+\[
+\int_{\mathbb{R}} \hat{f}(y) e^{2\pi i x y} dy
+\]
+也一致收敛。
+
+我们先直接计算
+\[
+\int_{-\infty}^{+\infty} \hat{f}(y) e^{2\pi i x y} dy,
+\]
+看能不能得到什么思路。
+
+\[
+\int_{-\infty}^{+\infty} \hat{f}(y) e^{2\pi i x y} dy
+= \int_{-\infty}^{+\infty} \left( \int_{-\infty}^{+\infty} f(t) e^{-2\pi i t y} dt \right) e^{2\pi i x y} dy
+= \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} f(t) e^{2\pi i y (x-t)} dt dy
+\]
+
+看出上面这个积分对于 \(y\) 是收敛的（这个反常重积分的收敛性已经证明，所以没有收敛性方面的问题）。
+
+上式：
+\[
+\int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} f(t) e^{2\pi i y (x-t)} dy dt
+= \int_{-\infty}^{+\infty} \frac{f(t)}{2\pi i (x-t)} e^{2\pi i y (x-t)} \bigg|_{-\infty}^{+\infty} dt
+\]
+
+到这里我们发现似乎进行不下去了，原因在于 \(e^{2\pi i y (x-t)}\) 关于 \(y\) 是个周期函数，它在 \(+\infty, -\infty\) 处的值都不确定。
+
+我们尝试改变积分上下限，直接计算
+\[
+\int_{-\infty}^{+\infty} \frac{f(t)}{2\pi i (x-t)} \left. e^{2\pi i y (x-t)} \right|_{-A}^{A} dt
+\]
+\[
+= \int_{-\infty}^{+\infty} \frac{f(t)}{2\pi i (x-t)} \cdot 2i\sin\bigl(2\pi A (x-t)\bigr) dt
+= \int_{-\infty}^{+\infty} \frac{f(t)}{\pi (x-t)} \sin\bigl(2\pi A (x-t)\bigr) dt.
+\]
+
+为让形式更简单，用 \(u\) 置换 \(x-t\)，于是 \(t = x-u\)，则积分变为
+\[
+\int_{-\infty}^{+\infty} \frac{f(x-u)}{\pi u} \sin(2\pi A u) du.
+\]
+
+现在就是证明：
+\[
+\lim_{A\to+\infty} \int_{-\infty}^{+\infty} \frac{f(x-u)}{\pi u} \sin(2\pi A u) du = f(x).
+\]
+
+而
+\[
+\int_{-\infty}^{+\infty} \frac{f(x-u)}{\pi u} \sin(2\pi A u) du - f(x)
+= \int_{-\infty}^{+\infty} \frac{f(x-u) - f(x)}{\pi u} \sin(2\pi A u) du,
+\]
+这是因为
+\[
+\int_{-\infty}^{+\infty} \frac{\sin(2\pi A u)}{\pi u} du
+= \frac{2}{\pi} \int_{0}^{+\infty} \frac{\sin(2\pi A u)}{u} du.
+\]
+由于可设 \(A>0\)，于是
+\[
+\frac{2}{\pi} \int_{0}^{+\infty} \frac{\sin(2\pi A u)}{u} du
+= \frac{2}{\pi} \cdot \frac{\pi}{2} \text{sgn}(A) = 1.
+\]
+
+又因为 \(f \in \mathcal{S}\)，于是
+\[
+\int_{-\infty}^{+\infty} \left| \frac{f(x-u) - f(x)}{\pi u} \right| du
+\]
+收敛。于是由 Riemann–Lebesgue 引理，
+\[
+\lim_{A\to+\infty} \int_{-\infty}^{+\infty} \left| \frac{f(x-u) - f(x)}{\pi u} \sin(2\pi A u) \right| dt = 0,
+\]
+即
+\[
+\lim_{A\to+\infty} \int_{-\infty}^{+\infty} \frac{f(x-u)}{\pi u} \sin(2\pi A u) du = f(x).
+\]
+证毕。
+
+\vspace{1em}
+\noindent \textbf{证明2：} 先给出好核与卷积的概念，再给出乘积公式，最后我们再进行证明。
+
+一列函数 \(\{K_\delta(x)\}\) 被称为好核，若：
+\begin{enumerate}
+    \item \(\displaystyle \int_{-\infty}^{+\infty} K_\delta(x) dx = 1\);
+    \item \(\displaystyle \int_{-\infty}^{+\infty} |K_\delta(x)| dx \le M\);
+    \item 对每个 \(\eta>0\)，当 \(\delta>0\) 时，有 \(\displaystyle \int_{|x|\ge\eta} |K_\delta(x)| dx \to 0\).
+\end{enumerate}
+
+（注：这里给出的是 Fourier 变换语境下的,对于一般的以2L为周期的函数而言，这里的积分上下限应该为L和-L,并且积分号前的系数应该为$\frac{1}{2L}$）
+
+性质1说的就是对好核在$\mathbb{R}$上的积分值的规定,性质2说的是好核的绝对值在$\mathbb{R}$上的积分是有界的,
+性质3说的是好核的函数值会不断集中在原点周围一个很小的邻域上，所有的函数值都在原点附近，而离原点比较远的那些地方函数值会很快的趋近于0.
+
+好核在Fourier分析的理论中是极其重要的,具体来说，函数和好核列的卷积在函数的连续点处收敛于函数自身.
+
+卷积定义为：若 \(f,g \in S(\mathbb{R})\)，则
+\[
+(f*g)(x) = \int_{-\infty}^{+\infty} f(x-t) g(t) dt.
+\]
+
+乘积公式: 若 \(f,g \in S(\mathbb{R})\)，则
+\[
+\int_{-\infty}^{+\infty} \hat{f}(x) g(x) dx = \int_{-\infty}^{+\infty} f(y) \hat{g}(y) dy.
+\]
+
+\noindent \textbf{证明：} 对 \(F(x,y) = f(x) g(y) e^{-2\pi i x y}\)，直接应用 Fubini 定理，即
+\[
+ \int_{-\infty}^{+\infty} \hat{f}(y) g(y) dy
+=\int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} F(x,y) dx dy
+= \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} F(x,y) dy dx
+= \int_{-\infty}^{+\infty} f(x) \hat{g}(x) dx.
+\]
+
+我们给出一个好核：
+\[
+K_\delta(x) = \delta^{-\frac{1}{2}} e^{-\frac{\pi x^2}{\delta}}.
+\]
+
+先证明
+\[
+f(0) = \int_{-\infty}^{+\infty} \hat{f}(y)  dy.
+\]
+令 \(G_\delta(x) = e^{-\pi \delta x^2}\)，则 \(\hat{G}_\delta(x) = K_\delta(x)\)。
+
+由乘积公式：
+\[
+\int_{-\infty}^{+\infty} f(x) K_\delta(x) dx = \int_{-\infty}^{+\infty} \hat{f}(y) G_\delta(y) dy.
+\]
+
+由于 \(K_\delta\) 是好核，当 \(\delta \to 0^+\) 时，第一个积分 \(\to f(0)\)；当 \(\delta \to 0^+\) 时，第二个积分趋于 \(\int_{-\infty}^{+\infty} \hat{f}(y) dy\)。
+于是
+\[
+f(0) = \int_{-\infty}^{+\infty} \hat{f}(y) dy.
+\]
+
+对一般情况，令 \(F(y) = f(y+x)\)，则 \(\hat{F}(y) = \hat{f}(y) e^{2\pi i x y}\)，代入上式得
+\[
+f(x) = F(0) = \int_{-\infty}^{+\infty} \hat{F}(y) dy = \int_{-\infty}^{+\infty} \hat{f}(y) e^{2\pi i x y} dy.
+\]
+
+\end{proof}
+
+
+\par 在不了解Fourier分析的理论时，想要用原本的方法做出此题还是比较困难的，需要补充很多概念，因此在这种情况下，使用标答的方式去做反而是更容易想到的，
+但是如果事先了解到这些理论，那么面对这样的题目就会有一定的准备.
+
+\par 第十七届初赛的第六题背景是Weyl等分布定理,Stein的书中花了5页的篇幅来准备和证明Weyl等分布定理,在此不再详细说明,
+但需要指出的是,阅读原书中的这一部分的收获是不小的,因为原书的证明过程给出了一个非常有价值的思想：对于连续函数，
+一个较难证明的结论可以先对三角函数(或对应的复指数函数)证明成立，然后再由连续函数可由三角多项式一致逼近来得到,对于可积函数来讲，
+可先用他的极大值与极小值来夹逼,最后由于区间上极大值的积分和极小值的积分都是分段连续的来证明成立.(这也是为什么原题的答案中说明了如果对连续函数或者分段连续函数证明成立也可得到14分!)
+
+\end{document}
+
+
